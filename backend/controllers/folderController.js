@@ -56,6 +56,30 @@ const createFolder = async (req, res) => {
 // @desc    Delete a folder
 // @route   DELETE /api/folders/:id
 // @access  Private
+const updateFolder = async (req, res) => {
+  try {
+    const { name, tags } = req.body;
+
+    const folder = await Folder.findById(req.params.id);
+
+    if (!folder) {
+      return res.status(404).json({ message: "Folder not found" });
+    }
+
+    if (folder.owner.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "User not authorized" });
+    }
+
+    folder.name = name || folder.name;
+    folder.tags = tags || folder.tags;
+
+    const updatedFolder = await folder.save();
+
+    res.json(updatedFolder);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 const deleteFolder = async (req, res) => {
   try {
     const folder = await Folder.findById(req.params.id);
@@ -81,5 +105,6 @@ const deleteFolder = async (req, res) => {
 module.exports = {
   getFolders,
   createFolder,
+  updateFolder,
   deleteFolder
 };
