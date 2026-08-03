@@ -5,7 +5,7 @@ import { login, reset } from '../features/auth/authSlice';
 import { BookOpen, Mail, Phone, Eye, EyeOff, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
-const API = `${import.meta.env.VITE_API_URL}/api/auth`;
+const API = "/api/auth";
 
 function Login() {
   const [tab, setTab] = useState('email'); // 'email' | 'phone'
